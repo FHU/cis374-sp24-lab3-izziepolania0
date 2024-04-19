@@ -5,14 +5,14 @@ using Lab3.SortingAlgorithms;
 
 namespace Lab3
 {
-    public enum OrderingType { Random, Reversed, NearlySorted}
+    public enum OrderingType { Random, Reversed, NearlySorted }
 
     [MemoryDiagnoser]
     [ShortRunJob]
     [MarkdownExporter, AsciiDocExporter, HtmlExporter, CsvExporter]
     public class SortingBenchmarks
-	{
-        [Params(100, 1000, 10_000)]
+    {
+        [Params(1000, 10_000, 100_000, 1_000_000, 10_000_000)]
         public int N;
 
         [Params(OrderingType.Random, OrderingType.Reversed, OrderingType.NearlySorted)]
@@ -31,7 +31,7 @@ namespace Lab3
         [IterationSetup]
         public void InterationSetup()
         {
-            list = GenerateRandomIntList(N, N/2);
+            list = GenerateRandomIntList(N, N / 2);
 
             switch (orderingType)
             {
@@ -48,8 +48,8 @@ namespace Lab3
                     list.Sort();
 
                     Random random = new Random();
-                    // swap 5% of elements 
-                    for (int i=0; i < 0.025*list.Count; i++)
+                    // swap 5% of elements
+                    for (int i = 0; i < 0.025 * list.Count; i++)
                     {
                         int index1 = random.Next() % list.Count;
                         int index2 = random.Next() % list.Count;
@@ -70,7 +70,7 @@ namespace Lab3
             list[index2] = temp;
         }
 
-        [Benchmark]
+        //[Benchmark]
         public void BubbleSort()
         {
             BubbleSort<int> bubbleSort = new BubbleSort<int>();
@@ -78,7 +78,7 @@ namespace Lab3
             bubbleSort.Sort(ref list);
         }
 
-        [Benchmark]
+        //[Benchmark]
         public void InsertionSort()
         {
             InsertionSort<int> insertionSort = new InsertionSort<int>();
@@ -86,13 +86,36 @@ namespace Lab3
             insertionSort.Sort(ref list);
         }
 
+        //[Benchmark]
+        public void QuickSort()
+        {
+            QuickSort<int> quickSort = new QuickSort<int>();
 
-        [Benchmark]
+            quickSort.Sort(ref list);
+        }
+
+        //[Benchmark]
+        public void HeapSort()
+        {
+            HeapSort<int> heapSort = new HeapSort<int>();
+
+            heapSort.Sort(ref list);
+        }
+
+        //[Benchmark]
         public void RadixSort()
         {
             RadixSort radixSort = new RadixSort();
 
-            radixSort.Sort( array );
+            radixSort.Sort(array);
+        }
+
+        [Benchmark]
+        public void CountingSort()
+        {
+            CountingSort countingSort = new CountingSort();
+
+            countingSort.Sort(array);
         }
 
 
@@ -112,4 +135,5 @@ namespace Lab3
 
     }
 }
+
 
